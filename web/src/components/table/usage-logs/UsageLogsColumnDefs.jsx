@@ -249,44 +249,6 @@ export const getLogsColumns = ({
       dataIndex: 'timestamp2string',
     },
     {
-      key: COLUMN_KEYS.CHANNEL,
-      title: t('渠道'),
-      dataIndex: 'channel',
-      render: (text, record, index) => {
-        let isMultiKey = false;
-        let multiKeyIndex = -1;
-        let other = getLogOther(record.other);
-        if (other?.admin_info) {
-          let adminInfo = other.admin_info;
-          if (adminInfo?.is_multi_key) {
-            isMultiKey = true;
-            multiKeyIndex = adminInfo.multi_key_index;
-          }
-        }
-
-        return isAdminUser &&
-          (record.type === 0 || record.type === 2 || record.type === 5) ? (
-          <Space>
-            <Tooltip content={record.channel_name || t('未知渠道')}>
-              <span>
-                <Tag
-                  color={colors[parseInt(text) % colors.length]}
-                  shape='circle'
-                >
-                  {text}
-                </Tag>
-              </span>
-            </Tooltip>
-            {isMultiKey && (
-              <Tag color='white' shape='circle'>
-                {multiKeyIndex}
-              </Tag>
-            )}
-          </Space>
-        ) : null;
-      },
-    },
-    {
       key: COLUMN_KEYS.USERNAME,
       title: t('用户'),
       dataIndex: 'username',
@@ -494,28 +456,7 @@ export const getLogsColumns = ({
       title: t('重试'),
       dataIndex: 'retry',
       render: (text, record, index) => {
-        if (!(record.type === 2 || record.type === 5)) {
-          return <></>;
-        }
-        let content = t('渠道') + `：${record.channel}`;
-        if (record.other !== '') {
-          let other = JSON.parse(record.other);
-          if (other === null) {
-            return <></>;
-          }
-          if (other.admin_info !== undefined) {
-            if (
-              other.admin_info.use_channel !== null &&
-              other.admin_info.use_channel !== undefined &&
-              other.admin_info.use_channel !== ''
-            ) {
-              let useChannel = other.admin_info.use_channel;
-              let useChannelStr = useChannel.join('->');
-              content = t('渠道') + `：${useChannelStr}`;
-            }
-          }
-        }
-        return isAdminUser ? <div>{content}</div> : <></>;
+        return <></>;
       },
     },
     {

@@ -52,6 +52,7 @@ const (
 
 func formatUserLogs(logs []*Log) {
 	for i := range logs {
+		logs[i].ChannelId = 0
 		logs[i].ChannelName = ""
 		var otherMap map[string]interface{}
 		otherMap, _ = common.StrToMap(logs[i].Other)
@@ -262,6 +263,12 @@ func GetAllLogs(logType int, startTimestamp int64, endTimestamp int64, modelName
 		for i := range logs {
 			logs[i].ChannelName = channelMap[logs[i].ChannelId]
 		}
+	}
+
+	// Clear channel information before returning
+	for i := range logs {
+
+		logs[i].ChannelName = ""
 	}
 
 	return logs, total, err
